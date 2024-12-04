@@ -67,11 +67,12 @@ The following health metrics are required:
 ---
 
 ## Screenshots
-### Input Form:  
-*(Include a screenshot here)*  
+### Input Form: 
+*![input form](home.png)* 
+*![input form](input.png)*  
 
 ### Prediction Result:  
-*(Include a screenshot here)*  
+*(![predict](output.png))*  
 
 ---
 

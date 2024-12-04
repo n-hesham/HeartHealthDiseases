@@ -3,8 +3,8 @@ import joblib
 import numpy as np
 
 # تحميل النموذج والمقياس
-model_path = r"E:\Project\Heart_health_prediction\Heart_health_prediction_model.pkl"
-scaler_path = r"E:\Project\Heart_health_prediction\scaler.pkl"
+model_path = r"E:\Project\HeartHealthDiseases\model.pkl"
+scaler_path = r"E:\Project\HeartHealthDiseases\scaler.pkl"
 
 try:
     model = joblib.load(model_path)
