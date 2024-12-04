@@ -1,0 +1,338 @@
+﻿/* الأساسيات */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f6f8;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: #34495e;
+}
+
+h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-top: 50px;
+    font-size: 36px;
+}
+
+h2 {
+    color: #2c3e50;
+    font-size: 24px;
+    margin-left: 20px;
+}
+
+/* تنسيق النموذج لعرض الحقول في صف واحد */
+form {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 900px;
+    margin: 30px auto;
+}
+
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.form-row label {
+    width: 30%;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-row input {
+    width: 65%;
+    padding: 14px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    background-color: #fafafa;
+}
+
+button {
+    background-color: #3498db;
+    color: white;
+    padding: 14px 30px;
+    font-size: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    border: none;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+/* عنوان الصفحة */
+h1 {
+    text-align: center;
+    color: #2980b9;
+    margin-top: 50px;
+    font-size: 40px;
+    animation: fadeIn 2s ease;
+}
+
+/* تأثير دخول النص */
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+/* تحسين تنسيق المعلومات */
+p {
+    font-size: 18px;
+    color: #7f8c8d;
+    text-align: center;
+    margin: 0 0 30px 0;
+}
+
+/* نمط النموذج (Form) */
+/* General form layout */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, #f4f4f4, #e1e1e1);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.form-group {
+    flex: 1;
+    min-width: 200px;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px; /* Increased margin for better spacing */
+    font-size: 16px; /* Larger font size for readability */
+    font-weight: 600; /* Bold font weight for better emphasis */
+    color: #34495e; /* Slightly darker color for readability */
+    transition: all 0.3s ease;
+}
+
+/* Add hover effect for labels to enhance interactivity */
+label:hover {
+    color: #3498db; /* Change color on hover for better user feedback */
+}
+
+/* Optionally, add focus effect for accessibility */
+input:focus + label {
+    color: #3498db; /* Highlight label when the input is focused */
+}
+
+
+input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+    align-self: center;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+
+/* استجابة الهاتف المحمول */
+@media (max-width: 600px) {
+    h1 {
+        font-size: 32px;
+    }
+
+    p {
+        font-size: 16px;
+    }
+
+    form {
+        padding: 20px;
+    }
+
+    form input[type="number"], 
+    form input[type="text"], 
+    form button {
+        font-size: 16px;
+    }
+}
+
+/* حاوية النتيجة */
+.result-container {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    margin: 40px auto;
+    font-size: 18px;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* تأثير التكبير عند التحويم على حاوية النتيجة */
+.result-container:hover {
+    transform: scale(1.05);
+}
+
+/* تنسيق عنوان النتيجة */
+.result-container h2 {
+    color: #2980b9;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 24px;
+}
+
+/* تنسيق حالة النتيجة */
+.status {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.status span {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.status .positive {
+    color: #e74c3c;
+}
+
+.status .negative {
+    color: #2ecc71;
+}
+
+/* تحسين تنسيق المعلومات الطبيعية */
+.normal-range {
+    background-color: #ecf8ff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 16px;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.normal-range strong {
+    font-size: 18px;
+    color: #34495e;
+}
+
+.normal-range:hover {
+    background-color: #d6eaf8;
+}
+
+/* الرابط "Go Back" */
+a {
+    display: inline-block;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 18px;
+    color: #3498db;
+    text-decoration: none;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    border: 2px solid #3498db;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+a:hover {
+    background-color: #3498db;
+    color: white;
+}
+
+/* استجابة للأجهزة المحمولة */
+@media (max-width: 600px) {
+    .result-container {
+        padding: 20px;
+    }
+
+    .result-container h2 {
+        font-size: 22px;
+    }
+
+    .status span {
+        font-size: 18px;
+    }
+
+    .normal-range {
+        font-size: 14px;
+    }
+}
+
+/* تنسيق الحاوية الخاصة بالخطأ */
+.error-container {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    margin: 40px auto;
+    text-align: center;
+    font-size: 18px;
+}
+
+/* تنسيق رسالة الخطأ */
+.error-container .message {
+    font-size: 20px;
+    color: #e74c3c;
+}
+
+/* تأثير الحاوية الخاصة بالخطأ عند التحويم */
+.error-container:hover {
+    transform: scale(1.02);
+}
+
+/* استجابة للأجهزة المحمولة */
+@media (max-width: 600px) {
+    .error-container {
+        padding: 20px;
+    }
+
+    .error-container .message {
+        font-size: 18px;
+    }
+
+    a {
+        font-size: 16px;
+    }
+}

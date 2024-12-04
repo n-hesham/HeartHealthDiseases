@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Disease Prediction Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <h1>Heart Disease Prediction Result</h1>
+    <div class="result-container">
+        <h2>Patient: {{ name }}</h2>
+        <p>{{ result }}</p>
+        <div class="status">
+            <p>Status: 
+                <span class="{{ status }}">{{ status }}</span>
+            </p>
+        </div>
+        <p class="normal-range">
+            <strong>Natural Ranges (for reference):</strong><br>
+            - Age: 18-100 years<br>
+            - Resting Blood Pressure: 90-120 mmHg<br>
+            - Cholesterol: 150-200 mg/dL<br>
+            - Maximum Heart Rate: 70-190 bpm<br>
+            - Other metrics may vary depending on the individual's health condition.
+        </p>
+        <a href="/">Go Back</a>
+    </div>
+
+</body>
+</html>

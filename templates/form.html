@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Health Prediction Form</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Heart Health Prediction Form</h1>
+    <h2>Patient Info:</h2>
+    <p>Name: {{ name }}</p>
+    <p>Age: {{ age }}</p>
+    <p>Gender: {{ gender }}</p>
+    <form action="/predict" method="POST">
+        <input type="hidden" name="name" value="{{ name }}">
+        <input type="hidden" name="age" value="{{ age }}">
+        <input type="hidden" name="gender" value="{{ gender }}">
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="cp">Chest Pain Type:</label>
+                <input type="number" name="cp" required>
+            </div>
+            <div class="form-group">
+                <label for="trestbps">Resting Blood Pressure:</label>
+                <input type="number" name="trestbps" required>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="chol">Cholesterol:</label>
+                <input type="number" name="chol" required>
+            </div>
+            <div class="form-group">
+                <label for="fbs">Fasting Blood Sugar:</label>
+                <input type="number" name="fbs" required>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="restecg">Resting Electrocardiographic:</label>
+                <input type="number" name="restecg" required>
+            </div>
+            <div class="form-group">
+                <label for="thalach">Maximum Heart Rate Achieved:</label>
+                <input type="number" name="thalach" required>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="exang">Exercise Induced Angina:</label>
+                <input type="number" name="exang" required>
+            </div>
+            <div class="form-group">
+                <label for="oldpeak">Old Peak:</label>
+                <input type="text" name="oldpeak" required>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="slope">Slope of Peak Exercise ST Segment:</label>
+                <input type="number" name="slope" required>
+            </div>
+            <div class="form-group">
+                <label for="ca">Number of Major Vessels Colored by Fluoroscopy:</label>
+                <input type="number" name="ca" required>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="thal">Thalassemia:</label>
+                <input type="number" name="thal" required>
+            </div>
+        </div>
+
+        <button type="submit">Predict</button>
+    </form>
+</body>
+</html>
