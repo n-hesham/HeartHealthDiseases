@@ -1,88 +1,99 @@
 # Heart Disease Prediction Web Application
 
-## Overview
-A web application that predicts the likelihood of a person having heart disease based on input features such as age, blood pressure, cholesterol levels, and other health metrics. The application is built using Flask and uses a combination of three models: Logistic Regression, Random Forest, and XGBoost. The application achieves an accuracy of 87% using an ensemble approach that leverages the strengths of each model.
+## Description
+This project is a Flask-based web application designed to predict the likelihood of heart disease based on various health metrics. It leverages machine learning models, including XGBoost and Random Forest, to analyze patient data and provide insights into heart health. The interactive UI allows users to input their health metrics and receive predictions in real-time, enhancing user engagement and awareness of heart disease risks.
+
+## Table of Contents
+- [Heart Disease Prediction Web Application](#heart-disease-prediction-web-application)
+  - [Description](#description)
+  - [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [Technologies Used](#technologies-used)
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [API Endpoints](#api-endpoints)
+    - [Predict Heart Disease](#predict-heart-disease)
+  - [Data Sources](#data-sources)
+  - [Contributing](#contributing)
+  - [License](#license)
+
 ## Features
-- Input health metrics through a user-friendly web interface.
-- Predicts heart disease risk (Positive or Negative) using multiple machine learning models.
-- Displays results instantly on a results page
-- The combination of Logistic Regression, Random Forest, and XGBoost ensures more reliable and accurate predictions.
+- **Interactive User Interface**: Easy-to-use web interface for data input and prediction.
+- **Real-Time Predictions**: Get instant predictions based on user-provided health metrics.
+- **Data Visualization**: Visual insights into the distribution of heart disease cases and correlations between features.
+- **Machine Learning Models**: Utilizes advanced models such as XGBoost and Random Forest for accurate predictions.
+- **Data Preprocessing**: Includes robust data cleaning and preprocessing steps to ensure high-quality input data.
+
+## Technologies Used
+- **Backend**: Flask
+- **Frontend**: HTML, CSS, JavaScript, Bootstrap
+- **Machine Learning**: Scikit-learn, XGBoost
+- **Data Visualization**: Matplotlib, Seaborn
+- **Others**: Pandas, NumPy
 
 ## Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/n-hesham/heart-disease-prediction.git
+   cd heart-disease-prediction
+   ```
+2. Create a virtual environment:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+   ```
+3. Install the required packages:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-### Clone the repository:
+## Usage
+1. Start the Flask server:
+   ```bash
+   python app.py
+   ```
+2. Open your web browser and navigate to `http://127.0.0.1:5000`.
 
-git clone https://github.com/NOUR12321/HeartHealthDiseases.git
-cd heart-disease-prediction
-Install dependencies:
+## API Endpoints
+### Predict Heart Disease
+- **Endpoint**: `/predict`
+- **Method**: POST
+- **Request Body**:
+  ```json
+  {
+    "Age": 40,
+    "Sex": 1,
+    "ChestPainType": 2,
+    "RestingBP": 140,
+    "Cholesterol": 289,
+    "FastingBS": 0,
+    "RestingECG": 0,
+    "MaxHR": 172,
+    "ExerciseAngina": 0,
+    "Oldpeak": 0.0,
+    "ST_Slope": 1
+  }
+  ```
+- **Response**:
+  ```json
+  {
+    "HeartDisease": 0,
+    "Probability": 0.85
+  }
+  ```
 
-pip install -r requirements.txt
-Train the Logistic Regression model (optional, if model.pkl is not included):
+## Data Sources
+- [Heart Disease Dataset](https://www.kaggle.com/api/v1/datasets/download/mexwell/heart-disease-dataset)
+- [Heart Failure Prediction Dataset](https://www.kaggle.com/api/v1/datasets/download/fedesoriano/heart-failure-prediction)
 
-python train_model.py
-Run the application:
-
-python app.py
-Open your browser and go to:
-
-http://127.0.0.1:5000/
-
-## Input Fields
-The following health metrics are required:
-
-- **Age**: Patient's age.  
-- **Sex**: Gender (1 = Male, 0 = Female).  
-- **Chest Pain Type (cp)**: Types of chest pain (0 to 3).  
-- **Resting Blood Pressure (trestbps)**: Measured in mmHg.  
-- **Cholesterol (chol)**: Cholesterol level in mg/dl.  
-- **Fasting Blood Sugar (fbs)**: 1 if >120 mg/dl, otherwise 0.  
-- **Resting ECG (restecg)**: ECG results (0 to 2).  
-- **Max Heart Rate Achieved (thalach)**: Maximum heart rate achieved.  
-- **Exercise-Induced Angina (exang)**: 1 = Yes, 0 = No.  
-- **ST Depression (oldpeak)**: ST depression induced by exercise.  
-- **Slope of Peak ST Segment (slope)**: Values range from 0 to 2.  
-- **Number of Major Vessels (ca)**: Values range from 0 to 3.  
-- **Thalassemia (thal)**:  
-  - 3 = Normal  
-  - 6 = Fixed Defect  
-  - 7 = Reversible Defect  
-
----
-
-## Example Use Case
-1. Enter health metrics such as age, cholesterol, and others in the input form.  
-2. Submit the form to get a prediction.  
-3. View the result, which will indicate:  
-   - **Positive (At Risk)**: Indicates a likelihood of heart disease.  
-   - **Negative (Not at Risk)**: Indicates no significant risk.  
-
----
-
-## Model Details
-- **Algorithm**: Logistic Regression, Random Forest, XGBoost.
-
-- **Accuracy**: 87% (ensemble of models)  
-- **Dataset**: Heart disease dataset sourced from Kaggle/UCI repository  
-
----
-
-## Screenshots
-### Input Form: 
-*![input form](home.png)* 
-*![input form](input.png)*  
-
-### Prediction Result:  
-*(![predict](output.png))*  
-
----
-
-## Future Improvements
-- Support for additional machine learning models.  
-- Improved UI/UX for a more engaging user experience.  
-- Add functionality to allow users to download their prediction results. 
-- Enhance model performance using ensemble methods like Voting Classifier or Stacking. 
-
----
+## Contributing
+Contributions are welcome! Please follow these steps:
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature-branch`).
+3. Make your changes.
+4. Commit your changes (`git commit -m 'Add new feature'`).
+5. Push to the branch (`git push origin feature-branch`).
+6. Open a pull request.
 
 ## License
-This project is open-source and available under the MIT License.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
