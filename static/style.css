@@ -1,32 +1,60 @@
 ﻿/* الأساسيات */
+:root {
+    /* Primary Colors */
+    --primary-color: #1280f66a; /* Main theme color */
+    --primary-dark: #2930b9; /* Darker shade of primary */
+    --primary-light: #d6eaf8; /* Lighter shade of primary */
+
+    /* Secondary Colors */
+    --secondary-color: #2ecc71; /* Success green */
+    --secondary-dark: #27ae60; /* Darker green */
+    --secondary-light: #e9f7ef; /* Lighter green */
+
+    /* Error Colors */
+    --error-color: #e74c3c; /* Error red */
+    --error-dark: #c0392b; /* Darker red */
+
+    /* Neutral Colors */
+    --background-color: #f4f6f8; /* Light background */
+    --text-color: #40a6da; /* Main text color */
+    --text-muted: #7f8c8d; /* Muted text */
+    --white: #ffffff; /* White */
+
+    /* Shadows */
+    --box-shadow: rgba(0, 0, 0, 0.15);
+    --box-shadow-hover: rgba(0, 0, 0, 0.2);
+}
+
+/* تطبيق الألوان على العناصر */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f4f6f8;
+    background-color: var(--background-color);
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    color: #34495e;
+    color: var(--text-color);
 }
 
 h1 {
+    color: linear-gradient(to right, var(--primary-color), var(--primary-dark));;
     text-align: center;
-    color: #2c3e50;
     margin-top: 50px;
     font-size: 36px;
 }
 
 h2 {
-    color: #2c3e50;
+    color: var(--primary-color);
+    font-weight: bolder;
     font-size: 24px;
-    margin-left: 20px;
+    text-align: center;
 }
 
 /* تنسيق النموذج لعرض الحقول في صف واحد */
 form {
-    background-color: #fff;
+    background-color: var(--white);
     padding: 40px;
     border-radius: 12px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 16px var(--box-shadow);
     width: 100%;
     max-width: 900px;
     margin: 30px auto;
@@ -40,9 +68,9 @@ form {
 }
 
 .form-row label {
-    width: 30%;
+    width: 20%;
     font-weight: bold;
-    color: #333;
+    color: var(--text-color);
 }
 
 .form-row input {
@@ -54,69 +82,52 @@ form {
 }
 
 button {
-    background-color: #3498db;
-    color: white;
+    background: linear-gradient(45deg, var(--primary-color), var(--primary-dark));
+    color: var(--white);
     padding: 14px 30px;
     font-size: 20px;
     border-radius: 10px;
     cursor: pointer;
     border: none;
-    width: 100%;
+    box-shadow: 0 5px 15px var(--box-shadow);
+    transition: all 0.3s ease;
 }
-
 button:hover {
-    background-color: #2980b9;
+    background: linear-gradient(45deg, var(--primary-dark), var(--primary-color));
+    transform: translateY(-2px);
 }
 
-/* عنوان الصفحة */
-h1 {
-    text-align: center;
-    color: #2980b9;
-    margin-top: 50px;
-    font-size: 40px;
-    animation: fadeIn 2s ease;
-}
-
-/* تأثير دخول النص */
-@keyframes fadeIn {
-    0% { opacity: 0; }
-    100% { opacity: 1; }
-}
 
 /* تحسين تنسيق المعلومات */
 p {
     font-size: 18px;
-    color: #7f8c8d;
+    color: var(--text-muted);
+    font-weight: bold;
     text-align: center;
     margin: 0 0 30px 0;
 }
 
-/* نمط النموذج (Form) */
-/* General form layout */
+/* النموذج */
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
-    background-color: #f4f4f4;
-}
-
-h1, h2 {
-    text-align: center;
+    background: linear-gradient(to right, #505455, #0b0b0b);
+    font-family: 'Roboto', sans-serif;
 }
 
 form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    align-items: center;
+    gap: 18px;
     max-width: 800px;
     margin: 0 auto;
-    background: linear-gradient(135deg, #f4f4f4, #e1e1e1);
+    background: linear-gradient(to right, #131212, #c5bebe85);
     padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 18px;
+    box-shadow: 0 10px 15px var(--box-shadow);
 }
 
 .form-row {
+    padding: 20px;
     display: flex;
     justify-content: space-between;
     gap: 10px;
@@ -129,38 +140,40 @@ form {
 }
 
 label {
-    display: block;
-    margin-bottom: 10px; /* Increased margin for better spacing */
-    font-size: 16px; /* Larger font size for readability */
-    font-weight: 600; /* Bold font weight for better emphasis */
-    color: #34495e; /* Slightly darker color for readability */
+    display: inline-flexbox;
+    margin-bottom: 22px;
+    font-size: 17px;
+    font-weight: 600;
+    color: linear-gradient(to right, #131212, #f6f7f9);
     transition: all 0.3s ease;
 }
 
-/* Add hover effect for labels to enhance interactivity */
 label:hover {
-    color: #3498db; /* Change color on hover for better user feedback */
+    color: var(--primary-color);
 }
-
-/* Optionally, add focus effect for accessibility */
-input:focus + label {
-    color: #3498db; /* Highlight label when the input is focused */
-}
-
 
 input {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
+    width: 70%;
+    padding: 10px;
+    margin-top: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
+}
+
+input:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 5px rgba(3, 138, 227, 0.5);
+}
+input::placeholder {
+    color: #aaa;
+    font-style: italic;
 }
 
 button {
     padding: 10px 20px;
     font-size: 16px;
-    background-color: #4CAF50;
-    color: white;
+    background-color: var(--secondary-color);
+    color: var(--white);
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -169,9 +182,8 @@ button {
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: var(--secondary-dark);
 }
-
 
 /* استجابة الهاتف المحمول */
 @media (max-width: 600px) {
@@ -195,32 +207,32 @@ button:hover {
 }
 
 /* حاوية النتيجة */
-.result-container {
-    background-color: #ffffff;
+.result-container, .error-container {
+    background: linear-gradient(to right, #505455, #0b0b0b);
     padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 600px;
-    margin: 40px auto;
-    font-size: 18px;
-    transition: transform 0.3s ease-in-out;
+    border-radius: 16px;
+    box-shadow: 0 10px 20px #0000001a;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 40%;
+    max-width: 600px; /* Ensure card doesn't exceed 600px */
+    margin: 0 auto; /* Center horizontally */
 }
 
-/* تأثير التكبير عند التحويم على حاوية النتيجة */
-.result-container:hover {
+/* تأثير التحويم للحاويتين */
+.result-container:hover, .error-container:hover {
     transform: scale(1.05);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
 }
 
-/* تنسيق عنوان النتيجة */
+/* عنوان النتيجة */
 .result-container h2 {
-    color: #2980b9;
+    color: var(--primary-color); /* Secondary Color */
+    font-size: 24px;
     margin-bottom: 20px;
     text-align: center;
-    font-size: 24px;
 }
 
-/* تنسيق حالة النتيجة */
+/* تحسين تنسيق حالة النتيجة */
 .status {
     margin: 20px 0;
     text-align: center;
@@ -232,16 +244,25 @@ button:hover {
 }
 
 .status .positive {
-    color: #e74c3c;
+    color: var(--error-color); /* Using error color for positive state */
 }
 
 .status .negative {
-    color: #2ecc71;
+    color: var(--secondary-color); /* Using secondary color for negative state */
+}
+
+/* الحاوية الرئيسية التي تحتوي على كل العناصر */
+.div-container {
+    display: flex; /* Ensures that elements are properly aligned */
+    justify-content: center; /* Centers the container horizontally */
+    align-items: center; /* Vertically centers content */
+    flex-direction: column; /* Stack the content vertically */
+    height: 100vh; /* Make sure the container takes full height of the viewport */
 }
 
 /* تحسين تنسيق المعلومات الطبيعية */
 .normal-range {
-    background-color: #ecf8ff;
+    background-color: var(--primary-light);
     border: 1px solid #ddd;
     padding: 10px;
     border-radius: 8px;
@@ -252,11 +273,11 @@ button:hover {
 
 .normal-range strong {
     font-size: 18px;
-    color: #34495e;
+    color: var(--text-color);
 }
 
 .normal-range:hover {
-    background-color: #d6eaf8;
+    background-color: var(--primary-color);
 }
 
 /* الرابط "Go Back" */
@@ -265,19 +286,44 @@ a {
     text-align: center;
     margin-top: 20px;
     font-size: 18px;
-    color: #3498db;
+    color: var(--primary-color);
     text-decoration: none;
     padding: 10px 20px;
-    background-color: #ffffff;
-    border: 2px solid #3498db;
+    background-color: var(--white);
+    border: 2px solid var(--primary-color);
     border-radius: 8px;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 a:hover {
-    background-color: #3498db;
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--white);
 }
+
+/* تنسيق الحاوية الخاصة بالخطأ */
+.error-container {
+    background-color: var(--white);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    margin: 40px auto;
+    text-align: center;
+    font-size: 18px;
+}
+
+/* تنسيق رسالة الخطأ */
+.error-container .message {
+    font-size: 20px;
+    color: var(--error-color);
+}
+
+/* تأثير الحاوية الخاصة بالخطأ عند التحويم */
+.error-container:hover {
+    transform: scale(1.02);
+}
+
 
 /* استجابة للأجهزة المحمولة */
 @media (max-width: 600px) {
@@ -296,34 +342,7 @@ a:hover {
     .normal-range {
         font-size: 14px;
     }
-}
 
-/* تنسيق الحاوية الخاصة بالخطأ */
-.error-container {
-    background-color: #ffffff;
-    padding: 40px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 600px;
-    margin: 40px auto;
-    text-align: center;
-    font-size: 18px;
-}
-
-/* تنسيق رسالة الخطأ */
-.error-container .message {
-    font-size: 20px;
-    color: #e74c3c;
-}
-
-/* تأثير الحاوية الخاصة بالخطأ عند التحويم */
-.error-container:hover {
-    transform: scale(1.02);
-}
-
-/* استجابة للأجهزة المحمولة */
-@media (max-width: 600px) {
     .error-container {
         padding: 20px;
     }
