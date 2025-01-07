@@ -13,7 +13,10 @@ This project is a Flask-based web application designed to predict the likelihood
   - [Usage](#usage)
   - [API Endpoints](#api-endpoints)
     - [Predict Heart Disease](#predict-heart-disease)
+  - [Model Accuracy](#model-accuracy)
   - [Data Sources](#data-sources)
+  - [Images](#images)
+    - [Application Screenshot](#application-screenshot)
   - [Contributing](#contributing)
   - [License](#license)
 
@@ -26,9 +29,10 @@ This project is a Flask-based web application designed to predict the likelihood
 
 ## Technologies Used
 - **Backend**: Flask
-- **Frontend**: HTML, CSS, JavaScript, Bootstrap
+- **Frontend**: HTML, CSS
 - **Machine Learning**: Scikit-learn, XGBoost
 - **Data Visualization**: Matplotlib, Seaborn
+- **Database**: SQLite (or any preferred database)
 - **Others**: Pandas, NumPy
 
 ## Installation
@@ -82,9 +86,23 @@ This project is a Flask-based web application designed to predict the likelihood
   }
   ```
 
+## Model Accuracy
+The machine learning models used in this application have been evaluated using cross-validation techniques. The models achieve the following accuracy: 97.61% accuracy
+
+These metrics indicate the models' effectiveness in predicting heart disease based on the dataset used.
+
 ## Data Sources
 - [Heart Disease Dataset](https://www.kaggle.com/api/v1/datasets/download/mexwell/heart-disease-dataset)
 - [Heart Failure Prediction Dataset](https://www.kaggle.com/api/v1/datasets/download/fedesoriano/heart-failure-prediction)
+
+## Images
+Here are some images showcasing the application and its results:
+
+### Application Screenshot
+![Application Home](home.png)
+![Application Input form](input.png)
+![Application Output](output.png)
+
 
 ## Contributing
 Contributions are welcome! Please follow these steps:
