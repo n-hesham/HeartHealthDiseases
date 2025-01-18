@@ -185,26 +185,7 @@ button:hover {
     background-color: var(--secondary-dark);
 }
 
-/* استجابة الهاتف المحمول */
-@media (max-width: 600px) {
-    h1 {
-        font-size: 32px;
-    }
 
-    p {
-        font-size: 16px;
-    }
-
-    form {
-        padding: 20px;
-    }
-
-    form input[type="number"], 
-    form input[type="text"], 
-    form button {
-        font-size: 16px;
-    }
-}
 
 /* حاوية النتيجة */
 .result-container, .error-container {
@@ -353,5 +334,67 @@ a:hover {
 
     a {
         font-size: 16px;
+    }
+}
+/* Mobile-First Responsive Design Enhancements */
+@media (max-width: 600px) {
+    /* General Text Adjustments */
+    body {
+        font-size: 14px; /* Smaller font size for better fit */
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 28px; /* Adjust heading sizes */
+    }
+
+    h2 {
+        font-size: 22px;
+    }
+
+    p {
+        font-size: 14px;
+    }
+
+    /* Form Responsiveness */
+    form {
+        padding: 15px; /* Reduce padding */
+        width: 95%; /* Full width with some margin */
+    }
+
+    .form-row {
+        flex-direction: column; /* Stack form fields vertically */
+        gap: 12px;
+    }
+
+    .form-row label,
+    .form-row input {
+        width: 100%; /* Full width for inputs */
+    }
+
+    button {
+        width: 100%; /* Full width for buttons */
+        font-size: 16px; /* Adjust font size */
+        padding: 12px; /* Smaller padding */
+    }
+
+    /* Result and Error Containers */
+    .result-container, .error-container {
+        width: 90%; /* Make containers smaller */
+        padding: 20px;
+    }
+
+    .normal-range {
+        font-size: 14px; /* Smaller font */
+    }
+
+    .status span {
+        font-size: 16px; /* Adjust font size for statuses */
+    }
+
+    /* Links */
+    a {
+        font-size: 14px;
+        padding: 8px 16px; /* Reduce padding */
     }
 }
