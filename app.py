@@ -1,130 +1,132 @@
 ﻿from flask import Flask, render_template, request
 import joblib
 import numpy as np
+import pandas as pd
 import logging
+import sklearn
 
-
-
-logging.basicConfig(level=logging.ERROR)
-
-# تحميل النموذج والمقياس
-model_path = r"E:\Project\HeartHealthDiseases\model.pkl"
-scaler_path = r"E:\Project\HeartHealthDiseases\scaler.pkl"
-
-try:
-    model = joblib.load(model_path)
-    scaler = joblib.load(scaler_path)
-    print("Model and scaler loaded successfully.")
-except FileNotFoundError:
-    raise Exception("Error loading model or scaler. Please check the file paths.")
-
+# --- Basic Setup ---
+logging.basicConfig(level=logging.INFO)
 app = Flask(__name__)
 
-# الصفحة الرئيسية
+# --- Model Paths ---
+MODEL_PATH = r"E:\Project\HeartHealthDiseases\model.pkl"
+SCALER_PATH = r"E:\Project\HeartHealthDiseases\scaler.pkl"
+
+# --- Expected Features in Correct Order ---
+EXPECTED_FEATURE_NAMES = [
+    'Age', 'Sex', 'ChestPainType', 'RestingBP', 'Cholesterol', 'FastingBS',
+    'RestingECG', 'MaxHR', 'ExerciseAngina', 'Oldpeak', 'ST_Slope'
+]
+
+# --- Load Model and Scaler ---
+try:
+    app.logger.info("Flask app starting...")
+    app.logger.info(f"Scikit-learn version: {sklearn.__version__}")
+    model = joblib.load(MODEL_PATH)
+    scaler = joblib.load(SCALER_PATH)
+    app.logger.info("Model and scaler loaded successfully.")
+    # If version warnings reappear here, the .pkl files are still old!
+except FileNotFoundError:
+    app.logger.error(f"Model or scaler not found. Paths: {MODEL_PATH}, {SCALER_PATH}")
+    model = None
+    scaler = None
+except Exception as e:
+    app.logger.error(f"Error loading model/scaler: {e}")
+    model = None
+    scaler = None
+
+# --- Routes ---
+
 @app.route('/')
-def home():
-    return render_template('index.html')
+def index():
+    """Render the input form (and optionally, the result)."""
+    # Pass show_result=False explicitly for the initial GET request
+    return render_template('index.html', show_result=False)
 
-# صفحة form (لإدخال بيانات التحاليل)
-@app.route('/form', methods=['POST'])
-def form():
-    try:
-        # استلام البيانات من صفحة index
-        name = request.form['name']
-        age = int(request.form['Age'])
-        gender = int(request.form['Sex'])
 
-        return render_template('form.html', name=name, age=age, gender=gender)
-    except Exception as e:
-        logging.error(f"Error in form submission: {e}")
-        return render_template('error.html', error_message="Error in form submission. Please check the input.")
-
-# صفحة التنبؤ بناءً على البيانات المدخلة من صفحة form
 @app.route('/predict', methods=['POST'])
 def predict():
+    # Default context for rendering template on error or success
+    render_context = {'show_result': False}
+
+    if not model or not scaler:
+        app.logger.error("Model or scaler not loaded.")
+        render_context['error'] = "Model or Scaler failed to load."
+        return render_template('index.html', **render_context)
+
+    form_data = request.form
+    patient_name = form_data.get('name', 'N/A')
+    render_context['name'] = patient_name # Add name to context early
+
     try:
-        # Collect input data from the form
-        age = request.form.get('Age')
-        if not age:
-            raise ValueError("Age is missing or empty.")
-        age = int(age)
+        app.logger.info(f"Prediction request for: {patient_name}")
+        input_values = {}
+        # Preserve entered form data for re-rendering if needed
+        for feature in EXPECTED_FEATURE_NAMES + ['name']: # Include name
+             render_context[f'form_{feature}'] = form_data.get(feature, '')
 
-        gender = request.form.get('Sex')
-        if not gender:
-            raise ValueError("Gender is missing or empty.")
-        gender = int(gender)
+        for feature in EXPECTED_FEATURE_NAMES:
+            value = form_data.get(feature)
+            if value is None or value.strip() == '':
+                raise ValueError(f"Missing value for '{feature}'.")
+            try:
+                # Use float for Oldpeak, int for others based on your form/data
+                input_values[feature] = float(value) if feature == 'Oldpeak' else int(value)
+            except ValueError:
+                # Raise specific error for bad numeric conversion
+                raise ValueError(f"Invalid non-numeric value entered for '{feature}': '{value}'")
 
-        chest_pain_type = request.form.get('ChestPainType')
-        if not chest_pain_type:
-            raise ValueError("Chest Pain Type is missing or empty.")
-        chest_pain_type = int(chest_pain_type)
+        # Create DataFrame for prediction
+        input_df = pd.DataFrame([input_values], columns=EXPECTED_FEATURE_NAMES)
 
-        resting_bp = request.form.get('RestingBP')
-        if not resting_bp:
-            raise ValueError("Resting BP is missing or empty.")
-        resting_bp = int(resting_bp)
-
-        cholesterol = request.form.get('Cholesterol')
-        if not cholesterol:
-            raise ValueError("Cholesterol is missing or empty.")
-        cholesterol = int(cholesterol)
-
-        fasting_bs = request.form.get('FastingBS')
-        if not fasting_bs:
-            raise ValueError("Fasting BS is missing or empty.")
-        fasting_bs = int(fasting_bs)
-
-        resting_ecg = request.form.get('RestingECG')
-        if not resting_ecg:
-            raise ValueError("Resting ECG is missing or empty.")
-        resting_ecg = int(resting_ecg)
-
-        max_hr = request.form.get('MaxHR')
-        if not max_hr:
-            raise ValueError("Max HR is missing or empty.")
-        max_hr = int(max_hr)
-
-        exercise_angina = request.form.get('ExerciseAngina')
-        if not exercise_angina:
-            raise ValueError("Exercise Angina is missing or empty.")
-        exercise_angina = int(exercise_angina)
-
-        oldpeak = request.form.get('Oldpeak')
-        if not oldpeak:
-            raise ValueError("Oldpeak is missing or empty.")
-        oldpeak = float(oldpeak)
-
-        st_slope = request.form.get('ST_Slope')
-        if not st_slope:
-            raise ValueError("ST_Slope is missing or empty.")
-        st_slope = int(st_slope)
-
-        # Combine inputs into a NumPy array for prediction
-        features = np.array([[age, gender, chest_pain_type, resting_bp, cholesterol, fasting_bs,
-                               resting_ecg, max_hr, exercise_angina, oldpeak, st_slope]])
-
-        # Scale the features
-        scaled_features = scaler.transform(features)
+        # Scale features
+        scaled_features = scaler.transform(input_df)
 
         # Make prediction
         prediction = model.predict(scaled_features)
 
-        # Interpret prediction
-        result = "Heart Disease Detected" if prediction[0] == 1 else "No Heart Disease Detected"
-        status = "positive" if prediction[0] == 1 else "negative"
+        # Calculate prediction probability (optional)
+        prediction_proba = None
+        if hasattr(model, "predict_proba"):
+            try:
+                # predict_proba usually returns [[prob_class_0, prob_class_1]]
+                prediction_proba = model.predict_proba(scaled_features)[0]
+            except Exception as e:
+                app.logger.warning(f"Could not calculate prediction probability: {e}")
 
-        # Render the result page
-        return render_template('result.html',status=status, result=result)
+        # --- CORRECT INDENTATION STARTS HERE ---
+        # These lines MUST be inside the main 'try' block
+        result_code = prediction[0] # Get the single prediction result (0 or 1)
+        result_text = "Heart Disease Detected" if result_code == 1 else "No Heart Disease Detected"
+        status_class = "positive" if result_code == 1 else "negative"
+
+        # Update context for successful prediction
+        render_context.update({
+            'result': result_text,
+            'status_class': status_class,
+            'probability': prediction_proba,
+            'show_result': True # Flag to show the result section
+        })
+        app.logger.info(f"Prediction for {patient_name}: {result_text}")
+        return render_template('index.html', **render_context)
+        # --- CORRECT INDENTATION ENDS HERE ---
 
     except ValueError as ve:
-        logging.error(f"Input validation error: {ve}")
-        return render_template('error.html', error_message=f"Input Error: {ve}")
+        # Handle specific input validation errors
+        app.logger.error(f"Input Error for {patient_name}: {ve}")
+        render_context['error'] = str(ve) # Pass error message to template
+        # Re-render form with error and sticky values
+        return render_template('index.html', **render_context)
+
     except Exception as e:
-        logging.error(f"Error during prediction: {e}")
-        return render_template('error.html', error_message=f"An error occurred: {e}")
+        # Handle unexpected errors during scaling or prediction
+        app.logger.error(f"Prediction failed for {patient_name}: {e}", exc_info=True) # Log traceback
+        render_context['error'] = "An unexpected error occurred during prediction." # User-friendly message
+        # Re-render form with error and sticky values
+        return render_template('index.html', **render_context)
 
 
-
-
+# --- Run the App ---
 if __name__ == '__main__':
     app.run(debug=True)

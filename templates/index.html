@@ -3,19 +3,631 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Heart Health Prediction</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Heart Health Prediction - Stepped Form</title>
+    <style>
+        /* --- START OF STEPPED FORM style.css --- */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            /* Refined Palette */
+            --primary-color: #667eea; /* Indigo/Purple */
+            --primary-dark: #5a67d8;
+            --primary-light: #e_form_text_color; /* Adjust slightly for more contrast */
+            --text-muted: #8492a6; /* Softer Muted Gray */
+            --border-color: #e_form_background: #f_form_focus_border: var(--primary-color);
+            --input-focus-shadow: rgba(102, 126, 234, 0.2);
+            --white: #ffffff;
+            --black: #1a202c;
+            --success-color: #38a169; /* Darker Green */
+            --error-color: #e53e3e; /* Darker Red */
+            --step-inactive-bg: #e_form_step_active_bg: var(--primary-color);
+            --step-active-text: var(--white);
+            --step-inactive-text: var(--text-muted);
+            --step-complete-bg: var(--success-color);
+
+            /* Dimensions & Effects */
+            --box-shadow-smooth: 0 7px 25px rgba(0, 0, 0, 0.07);
+            --box-shadow-interactive: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --border-radius-standard: 10px;
+            --border-radius-large: 14px;
+            --transition-default: 0.3s ease-in-out;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { font-size: 16px; scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif; /* Cleaner Sans-serif */
+            background-color: var(--background-color);
+            color: var(--form-text-color);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1.5rem;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            background-color: var(--card-background);
+            padding: 2.5rem 3rem;
+            border-radius: var(--border-radius-large);
+            box-shadow: var(--box-shadow-smooth);
+            width: 100%;
+            max-width: 750px; /* Optimized width for steps */
+            margin: 2rem auto;
+            position: relative; /* For potential absolute elements */
+            overflow: hidden; /* Hide overflowing step transitions */
+        }
+
+        h1 {
+            color: var(--black);
+            text-align: center;
+            margin-bottom: 2.5rem;
+            font-size: 2.2rem;
+            font-weight: 600;
+        }
+
+        /* --- Stepper Styles --- */
+        .stepper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            position: relative; /* For the progress line */
+        }
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            z-index: 1; /* Above the progress line */
+            flex-grow: 1; /* Distribute space */
+        }
+        .step-indicator {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--step-inactive-bg);
+            color: var(--step-inactive-text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            border: 2px solid transparent;
+            transition: all var(--transition-default);
+        }
+        .step-label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--step-inactive-text);
+            transition: color var(--transition-default);
+        }
+
+        /* Stepper Active/Completed States */
+        .step.active .step-indicator {
+            background-color: var(--step-active-bg);
+            color: var(--step-active-text);
+            border-color: var(--primary-dark);
+            transform: scale(1.1);
+        }
+        .step.active .step-label { color: var(--primary-dark); font-weight: 600; }
+
+        .step.completed .step-indicator {
+            background-color: var(--step-complete-bg);
+            color: var(--white);
+            border-color: var(--step-complete-bg);
+            /* Optional: Checkmark icon instead of number */
+            /* content: '✓'; */
+        }
+        .step.completed .step-label { color: var(--success-color); }
+
+        /* Stepper Progress Line */
+        .stepper::before {
+            content: '';
+            position: absolute;
+            top: 18px; /* Vertically center with indicators */
+            left: 10%; /* Start after first indicator */
+            right: 10%; /* End before last indicator */
+            height: 3px;
+            background-color: var(--step-inactive-bg);
+            z-index: 0;
+        }
+        #progress-line {
+            position: absolute;
+            top: 18px;
+            left: 10%;
+            height: 3px;
+            background-color: var(--primary-color);
+            z-index: 0;
+            width: 0%; /* Initial width */
+            transition: width var(--transition-default);
+        }
+
+
+        /* --- Form Content Styles --- */
+        #multiStepForm {
+            position: relative;
+        }
+        .form-step {
+            /* display: none; /* Initially hide steps via JS */
+            opacity: 0;
+            visibility: hidden;
+            position: absolute; /* Allow overlapping for transitions */
+            width: 100%;
+            transition: opacity var(--transition-default), visibility var(--transition-default);
+            transform: translateX(20px); /* Start slightly off-screen */
+        }
+        .form-step.active {
+            display: block; /* Show active step */
+            opacity: 1;
+            visibility: visible;
+            position: relative; /* Take up space */
+            transform: translateX(0);
+        }
+
+        .form-step h2 {
+            color: var(--primary-dark);
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            border-bottom: none; /* Remove border from step titles */
+        }
+
+        .form-row { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+        .form-group { flex: 1 1 200px; display: flex; flex-direction: column; min-width: 150px; }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--form-text-color);
+            font-size: 0.9rem; /* Slightly smaller label */
+        }
+
+        input[type="text"], input[type="number"], select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-standard);
+            background-color: var(--form-background);
+            font-size: 0.95rem;
+            font-family: inherit;
+            color: var(--form-text-color);
+            transition: border-color var(--transition-default), box-shadow var(--transition-default);
+             appearance: none; -webkit-appearance: none; -moz-appearance: none;
+        }
+        select {
+             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23A0AEC0'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd'/%3E%3C/svg%3E");
+             background-repeat: no-repeat;
+             background-position: right 0.8rem center;
+             background-size: 1em 1em;
+             padding-right: 2.5rem;
+         }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--form-focus-border);
+            box-shadow: 0 0 0 3px var(--input-focus-shadow);
+        }
+        input::placeholder { color: #A0AEC0; font-weight: 300; }
+        select option[disabled] { color: #A0AEC0; }
+
+        /* --- Navigation Buttons --- */
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border-color);
+        }
+        .nav-button {
+            padding: 0.7rem 1.8rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: var(--border-radius-standard);
+            cursor: pointer;
+            border: none;
+            transition: all var(--transition-default);
+            box-shadow: var(--box-shadow-interactive);
+        }
+        .nav-button.prev-button {
+            background-color: var(--white);
+            color: var(--primary-color);
+            border: 1px solid var(--border-color);
+        }
+        .nav-button.prev-button:hover { background-color: #f7fafc; }
+
+        .nav-button.next-button, .nav-button.submit-button {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: 1px solid var(--primary-color);
+        }
+        .nav-button.next-button:hover, .nav-button.submit-button:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(102, 126, 234, 0.3);
+        }
+         .nav-button:disabled {
+             opacity: 0.6;
+             cursor: not-allowed;
+         }
+        .prev-button[disabled] { display: none; } /* Hide prev on first step */
+
+        /* --- Result & Error Sections (Keep similar styling) --- */
+        .result-section, .error-section {
+            margin-top: 2.5rem; padding: 1.5rem 2rem; border-radius: var(--border-radius-standard);
+            border: 1px solid var(--border-color); position: relative; overflow: hidden;
+            background-color: var(--white); box-shadow: var(--box-shadow-smooth);
+        }
+        .result-section::before, .error-section::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; }
+        .result-section::before { background-color: var(--success-color); } /* Green for success result */
+        .error-section::before { background-color: var(--error-color); }
+
+        .result-section h2, .error-section h2 {
+            margin-top: 0; margin-bottom: 1rem; padding-bottom: 0; font-size: 1.3rem;
+            border-bottom: none; display: flex; align-items: center; gap: 0.5rem; font-weight: 600;
+        }
+        .error-section h2 { color: var(--error-color); }
+        .result-section h2 { color: var(--success-color); } /* Green header for result */
+        .error-section h2::before { content: '⚠️'; font-size: 1.2em; }
+        .result-section h2::before { content: '📊'; font-size: 1.2em; } /* Chart icon for results */
+
+        .error-message, .result-text, .result-section p { font-size: 1rem; color: var(--form-text-color); margin-bottom: 0.8rem; }
+        .result-section p strong { font-weight: 600; color: var(--black); }
+        .error-message { color: var(--error-color); font-weight: 500; }
+
+        .status { margin: 1rem 0; padding: 0.8rem 1rem; border-radius: var(--border-radius-standard); font-weight: 600; font-size: 1rem; text-align: center; border: none; color: var(--white); }
+        .status.positive { background-color: var(--error-color); }
+        .status.negative { background-color: var(--success-color); }
+
+        .probability-info { margin-top: 1rem; padding: 0.8rem 1rem; background-color: var(--primary-light); border-radius: var(--border-radius-standard); border: 1px solid var(--border-color);}
+        .probability-info p { margin-bottom: 0.4rem; font-size: 0.9rem; color: var(--text-muted); }
+        .probability-info p:first-child { font-weight: 600; color: var(--primary-dark); margin-bottom: 0.6rem; }
+        .probability-info .prob-no-disease { color: var(--success-color); font-weight: 500;}
+        .probability-info .prob-disease { color: var(--error-color); font-weight: 500;}
+
+        .reference-range { margin-top: 1rem; font-size: 0.8rem; background-color: var(--form-background); border-radius: var(--border-radius-standard); padding: 0.8rem 1rem; text-align: left; color: var(--text-muted); line-height: 1.4; border: 1px solid var(--border-color); }
+        .reference-range strong { color: var(--text-color); display: block; margin-bottom: 0.3rem; font-weight: 600; }
+        .reference-range em { display: block; margin-top: 0.5rem; font-style: normal; font-weight: 400; font-size: 0.75rem; }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .container { padding: 2rem 1.5rem; max-width: 95%; }
+            h1 { font-size: 1.8rem; }
+            .stepper { margin-bottom: 2rem; padding-bottom: 1rem;}
+            .step-indicator { width: 30px; height: 30px; font-size: 0.9rem;}
+            .step-label { font-size: 0.75rem;}
+            .stepper::before, #progress-line { top: 15px; height: 2px; }
+            .form-row { gap: 1rem; margin-bottom: 1rem; }
+            .form-navigation { margin-top: 2rem; padding-top: 1rem;}
+            .nav-button { padding: 0.6rem 1.2rem; font-size: 0.9rem;}
+            .result-section, .error-section { padding: 1.2rem; margin-top: 2rem;}
+            .result-section h2, .error-section h2 { font-size: 1.1rem;}
+        }
+        @media (max-width: 480px) {
+            body { padding: 1rem;}
+            .container { padding: 1.5rem 1rem;}
+            h1 { font-size: 1.6rem; margin-bottom: 2rem;}
+            .stepper { display: none; } /* Hide stepper on very small screens */
+            .form-step h2 { font-size: 1.3rem; text-align: center; }
+            .form-row { flex-direction: column; gap: 1rem;}
+            .form-group { min-width: 100%;}
+            .nav-button { width: 48%; padding: 0.7rem; text-align: center;} /* Make buttons closer to full width */
+        }
+        /* --- END OF STEPPED FORM style.css --- */
+    </style>
 </head>
 <body>
-    <h1>Heart Health Prediction</h1>
-    <form action="/form" method="POST">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required>
-        <label for="Age">Age:</label>
-        <input type="number" id="Age" name="Age" required>
-        <label for="Sex">Gender (1 for Male, 0 for Female):</label>
-        <input type="number" id="Sex" name="Sex" min="0" max="1" required>
-        <button type="submit">Next</button>
-    </form>
+    <div class="container">
+        <h1>Heart Health Prediction</h1>
+
+        <!-- Display Error Messages Conditionally (Before Form) -->
+        {% if error %}
+        <div class="error-section">
+            <h2>Prediction Error</h2>
+            <p class="error-message">{{ error }}</p>
+            <p style="font-size: 0.9em; margin-top: 1rem; color: var(--text-muted);">Please review your entries below and try submitting again.</p>
+        </div>
+        {% endif %}
+
+        <!-- Stepper Navigation -->
+        <div class="stepper">
+             <!-- Progress Line (controlled by JS) -->
+             <div id="progress-line"></div>
+             <!-- Steps -->
+            <div class="step active" data-step="1">
+                <div class="step-indicator">1</div>
+                <div class="step-label">Basic Info</div>
+            </div>
+            <div class="step" data-step="2">
+                <div class="step-indicator">2</div>
+                <div class="step-label">Vitals</div>
+            </div>
+            <div class="step" data-step="3">
+                <div class="step-indicator">3</div>
+                <div class="step-label">Exercise Data</div>
+            </div>
+        </div>
+
+        <!-- The Form (Now handles steps internally) -->
+        <form id="multiStepForm" action="/predict" method="POST">
+
+            <!-- Step 1: Basic Info -->
+            <div class="form-step active" data-step="1">
+                <h2>Step 1: Basic Information</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Full Name:</label>
+                        <input type="text" id="name" name="name" placeholder="e.g., Alex Johnson" required
+                               value="{{ form_name | default('', True) }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="Age">Age (Years):</label>
+                        <input type="number" id="Age" name="Age" placeholder="e.g., 62" required min="1" max="120"
+                               value="{{ form_Age | default('', True) }}">
+                    </div>
+                    <div class="form-group">
+                         <label for="Sex">Biological Sex:</label>
+                         <select id="Sex" name="Sex" required>
+                             <option value="" disabled {{ 'selected' if not form_Sex else '' }}>Select...</option>
+                             <option value="1" {{ 'selected' if form_Sex == '1' else '' }}>Male</option>
+                             <option value="0" {{ 'selected' if form_Sex == '0' else '' }}>Female</option>
+                         </select>
+                     </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Vitals -->
+            <div class="form-step" data-step="2">
+                <h2>Step 2: Core Vitals</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="ChestPainType">Chest Pain Type:</label>
+                         <select id="ChestPainType" name="ChestPainType" required>
+                             <option value="" disabled {{ 'selected' if not form_ChestPainType else '' }}>Select...</option>
+                             <option value="0" {{ 'selected' if form_ChestPainType == '0' else '' }}>0: Typical Angina</option>
+                             <option value="1" {{ 'selected' if form_ChestPainType == '1' else '' }}>1: Atypical Angina</option>
+                             <option value="2" {{ 'selected' if form_ChestPainType == '2' else '' }}>2: Non-anginal Pain</option>
+                             <option value="3" {{ 'selected' if form_ChestPainType == '3' else '' }}>3: Asymptomatic</option>
+                         </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="RestingBP">Resting BP (mmHg):</label>
+                        <input type="number" id="RestingBP" name="RestingBP" placeholder="e.g., 140" required
+                               value="{{ form_RestingBP | default('', True) }}">
+                    </div>
+                </div>
+                 <div class="form-row">
+                     <div class="form-group">
+                        <label for="Cholesterol">Cholesterol (mg/dl):</label>
+                        <input type="number" id="Cholesterol" name="Cholesterol" placeholder="e.g., 280" required
+                               value="{{ form_Cholesterol | default('', True) }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="FastingBS">Fasting BS > 120?</label>
+                         <select id="FastingBS" name="FastingBS" required>
+                             <option value="" disabled {{ 'selected' if not form_FastingBS else '' }}>Select...</option>
+                             <option value="1" {{ 'selected' if form_FastingBS == '1' else '' }}>Yes</option>
+                             <option value="0" {{ 'selected' if form_FastingBS == '0' else '' }}>No</option>
+                         </select>
+                     </div>
+                 </div>
+            </div>
+
+            <!-- Step 3: Exercise Data -->
+            <div class="form-step" data-step="3">
+                <h2>Step 3: ECG & Exercise Data</h2>
+                 <div class="form-row">
+                    <div class="form-group">
+                        <label for="RestingECG">Resting ECG Result:</label>
+                         <select id="RestingECG" name="RestingECG" required>
+                             <option value="" disabled {{ 'selected' if not form_RestingECG else '' }}>Select...</option>
+                             <option value="0" {{ 'selected' if form_RestingECG == '0' else '' }}>0: Normal</option>
+                             <option value="1" {{ 'selected' if form_RestingECG == '1' else '' }}>1: ST-T Abnormality</option>
+                             <option value="2" {{ 'selected' if form_RestingECG == '2' else '' }}>2: LV Hypertrophy</option>
+                         </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="MaxHR">Max Heart Rate (bpm):</label>
+                        <input type="number" id="MaxHR" name="MaxHR" placeholder="e.g., 170" required
+                               value="{{ form_MaxHR | default('', True) }}">
+                    </div>
+                </div>
+                 <div class="form-row">
+                     <div class="form-group">
+                        <label for="ExerciseAngina">Exercise Angina?</label>
+                         <select id="ExerciseAngina" name="ExerciseAngina" required>
+                             <option value="" disabled {{ 'selected' if not form_ExerciseAngina else '' }}>Select...</option>
+                             <option value="1" {{ 'selected' if form_ExerciseAngina == '1' else '' }}>Yes</option>
+                             <option value="0" {{ 'selected' if form_ExerciseAngina == '0' else '' }}>No</option>
+                         </select>
+                    </div>
+                     <div class="form-group">
+                        <label for="Oldpeak">ST Depression (Oldpeak):</label>
+                        <input type="text" id="Oldpeak" name="Oldpeak" placeholder="e.g., 1.2" required pattern="[0-9]+([.][0-9]+)?" title="Enter number e.g., 1.2"
+                               value="{{ form_Oldpeak | default('', True) }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="ST_Slope">Peak Exercise ST Slope:</label>
+                         <select id="ST_Slope" name="ST_Slope" required>
+                             <option value="" disabled {{ 'selected' if not form_ST_Slope else '' }}>Select...</option>
+                             <option value="0" {{ 'selected' if form_ST_Slope == '0' else '' }}>0: Upsloping</option>
+                             <option value="1" {{ 'selected' if form_ST_Slope == '1' else '' }}>1: Flat</option>
+                             <option value="2" {{ 'selected' if form_ST_Slope == '2' else '' }}>2: Downsloping</option>
+                         </select>
+                    </div>
+                 </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="form-navigation">
+                <button type="button" class="nav-button prev-button" id="prevBtn" disabled>Previous</button>
+                <button type="button" class="nav-button next-button" id="nextBtn">Next</button>
+                <button type="submit" class="nav-button submit-button" id="submitBtn" style="display: none;">Predict Health</button>
+            </div>
+        </form>
+
+        <!-- Display Result Section Conditionally (After Form) -->
+        {% if show_result %}
+        <div class="result-section {{ status_class }}"> <!-- Status class helps with header icon -->
+            <h2>Prediction Analysis</h2>
+            <p>Patient: <strong>{{ name }}</strong></p>
+            <p class="result-text">{{ result }}</p>
+            <div class="status {{ status_class }}">
+                 Status: {{ status_class|capitalize }}
+            </div>
+            {% if probability is defined and probability is not none %}
+                <div class="probability-info">
+                    <p>Prediction Confidence:</p>
+                    <p class="prob-no-disease">Likelihood (No Disease): {{ '%0.1f'|format(probability[0] * 100) }}%</p>
+                    <p class="prob-disease">Likelihood (Disease): {{ '%0.1f'|format(probability[1] * 100) }}%</p>
+                </div>
+            {% endif %}
+            <div class="reference-range">
+                 <strong>General Reference Information:</strong>
+                 Resting BP: 90-120 mmHg | Total Cholesterol: < 200 mg/dL | Max Heart Rate: Approx. 220 - Age (bpm)
+                 <em>Disclaimer: This tool provides a prediction based on input data and a trained model. It is not a medical diagnosis. Always consult a qualified healthcare professional.</em>
+             </div>
+        </div>
+        {% endif %}
+
+    </div> <!-- End of container -->
+
+    <script>
+        // --- START OF STEPPED FORM JavaScript ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const multiStepForm = document.getElementById('multiStepForm');
+            const formSteps = Array.from(multiStepForm.querySelectorAll('.form-step'));
+            const prevButton = document.getElementById('prevBtn');
+            const nextButton = document.getElementById('nextBtn');
+            const submitButton = document.getElementById('submitBtn');
+            const stepperItems = Array.from(document.querySelectorAll('.stepper .step'));
+            const progressLine = document.getElementById('progress-line');
+
+            let currentStep = 1; // Steps are 1-based
+            const totalSteps = formSteps.length;
+
+            function updateFormSteps() {
+                formSteps.forEach((step, index) => {
+                    const stepNumber = index + 1;
+                    if (stepNumber === currentStep) {
+                        step.classList.add('active');
+                    } else {
+                        step.classList.remove('active');
+                    }
+                });
+            }
+
+            function updateStepper() {
+                 stepperItems.forEach((step, index) => {
+                     const stepNumber = index + 1;
+                     const indicator = step.querySelector('.step-indicator');
+
+                     step.classList.remove('active', 'completed'); // Reset states
+
+                     if (stepNumber < currentStep) {
+                         step.classList.add('completed');
+                         // Optional: Change indicator content on completion
+                         // indicator.innerHTML = '✓';
+                     } else if (stepNumber === currentStep) {
+                         step.classList.add('active');
+                         // indicator.innerHTML = stepNumber; // Ensure number is shown
+                     } else {
+                         // Keep default state (inactive)
+                         // indicator.innerHTML = stepNumber;
+                     }
+                 });
+
+                 // Update progress line width
+                 const progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 80; // 80% to account for start/end padding
+                 progressLine.style.width = `${progressPercentage}%`;
+            }
+
+
+            function updateNavigationButtons() {
+                prevButton.disabled = currentStep === 1;
+                nextButton.style.display = currentStep === totalSteps ? 'none' : 'inline-block';
+                submitButton.style.display = currentStep === totalSteps ? 'inline-block' : 'none';
+            }
+
+             // Basic validation for the current step's required fields
+            function validateCurrentStep() {
+                 const activeStepFields = formSteps[currentStep - 1].querySelectorAll('[required]');
+                 let isValid = true;
+                 activeStepFields.forEach(field => {
+                     if (!field.value || (field.type === 'number' && field.value === '') || (field.tagName === 'SELECT' && field.value === '')) {
+                         isValid = false;
+                         // Optional: Add visual feedback for invalid fields
+                         field.style.borderColor = 'var(--error-color)'; // Example: Red border
+                     } else {
+                         field.style.borderColor = 'var(--border-color)'; // Reset border
+                     }
+                 });
+                 return isValid;
+            }
+
+
+            nextButton.addEventListener('click', () => {
+                if (validateCurrentStep()) {
+                    if (currentStep < totalSteps) {
+                        currentStep++;
+                        updateFormSteps();
+                        updateStepper();
+                        updateNavigationButtons();
+                    }
+                } else {
+                     // Optional: Show a general message or highlight fields more clearly
+                     alert('Please fill in all required fields for this step.');
+                 }
+            });
+
+            prevButton.addEventListener('click', () => {
+                 // Reset validation styles when going back
+                 const currentFields = formSteps[currentStep - 1].querySelectorAll('[required]');
+                 currentFields.forEach(field => field.style.borderColor = 'var(--border-color)');
+
+                if (currentStep > 1) {
+                    currentStep--;
+                    updateFormSteps();
+                    updateStepper();
+                    updateNavigationButtons();
+                }
+            });
+
+            // Initial setup
+            updateFormSteps();
+            updateStepper();
+            updateNavigationButtons();
+
+             // Handle case where Flask renders errors/results - might need to show step 1 again or adjust
+             // If results are shown, maybe disable the form? Or reset to step 1?
+             const resultSection = document.querySelector('.result-section');
+             const errorSection = document.querySelector('.error-section');
+             if (resultSection || errorSection) {
+                 // Option 1: Reset to step 1 if there was an error to allow correction
+                 if (errorSection) {
+                     currentStep = 1; // Or find the first step with an error
+                     updateFormSteps();
+                     updateStepper();
+                     updateNavigationButtons();
+                 }
+                  // Option 2: Keep the form as is, maybe scroll to results/error
+                 // window.scrollTo({ top: (resultSection || errorSection).offsetTop - 20, behavior: 'smooth'});
+             }
+
+
+        });
+        // --- END OF STEPPED FORM JavaScript ---
+    </script>
+
 </body>
 </html>
