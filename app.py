@@ -10,8 +10,8 @@ logging.basicConfig(level=logging.INFO)
 app = Flask(__name__)
 
 # --- Model Paths ---
-MODEL_PATH = r"E:\Project\HeartHealthDiseases\model.pkl"
-SCALER_PATH = r"E:\Project\HeartHealthDiseases\scaler.pkl"
+MODEL_PATH = r"model.pkl"
+SCALER_PATH = r"scaler.pkl"
 
 # --- Expected Features in Correct Order ---
 EXPECTED_FEATURE_NAMES = [
