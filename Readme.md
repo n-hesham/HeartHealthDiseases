@@ -99,9 +99,9 @@ These metrics indicate the models' effectiveness in predicting heart disease bas
 Here are some images showcasing the application and its results:
 
 ### Application Screenshot
-![Application Home](input 1.png)
-![Application Input form](input 2.png)
-![Application Input form](input 3.png)
+![Application Home](input1.png)
+![Application Input form](input2.png)
+![Application Input form](input3.png)
 ![Application Output](result.png)
 
 
